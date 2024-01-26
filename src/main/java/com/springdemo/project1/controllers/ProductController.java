@@ -1,7 +1,9 @@
 package com.springdemo.project1.controllers;
 
-import models.Product;
+import com.springdemo.project1.models.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.springdemo.project1.services.ProductService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,16 +11,28 @@ import java.util.List;
 @RestController
 @RequestMapping ("/products")
 public class ProductController {
-
+    private ProductService productService;
+    @Autowired
+    public ProductController(ProductService productService){
+        this.productService = productService;
+    }
     @GetMapping("")
     public List<Product> getAllProducts(){
-        return new ArrayList<>();
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
     public Product getSingleProduct(@PathVariable ("id") Long id){
-        return new Product();
+        return productService.getSingleProduct(id);
     }
+//    public Product getSingleProduct(@PathVariable ("id") Long id){
+//        return null;
+//    }
+
+//    public String getSingleProduct(@PathVariable ("id") Long id){
+//        return "getProductAPI";
+//    }
+
 
     @PostMapping()
     public Product addNewProduct(@RequestBody Product product){

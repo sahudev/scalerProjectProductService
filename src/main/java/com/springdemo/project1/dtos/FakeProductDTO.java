@@ -1,15 +1,16 @@
-package models;
+package com.springdemo.project1.dtos;
+
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Product {
+public class FakeProductDTO {
     private Long id;
     private String title;
     private double price;
-    private Category category;
+    private String category;
     private String description;
-    private String imageURL;
+    private String image;
 }
