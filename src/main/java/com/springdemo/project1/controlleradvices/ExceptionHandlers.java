@@ -23,5 +23,4 @@ public class ExceptionHandlers {
         dto.setMessage(productNotFoundException.getMessage());
         return new ResponseEntity<>(dto,HttpStatus.NOT_FOUND);
     }
-
 }

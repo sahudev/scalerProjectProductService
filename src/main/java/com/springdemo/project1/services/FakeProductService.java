@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service("fakeproductservice")
 public class FakeProductService implements ProductService{
 
     private RestTemplate restTemplate;
@@ -56,5 +56,20 @@ public class FakeProductService implements ProductService{
            answer.add(convertFakeProductToProduct(dto));
        }
        return answer;
+    }
+
+    @Override
+    public Product addNewProduct(Product product) {
+        return null;
+    }
+
+    @Override
+    public Product replaceProduct(Long id, Product product) throws ProductNotFoundException {
+        return null;
+    }
+
+    @Override
+    public boolean deleteProduct(Long id) {
+        return false;
     }
 }

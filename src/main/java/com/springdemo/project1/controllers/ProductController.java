@@ -2,7 +2,9 @@ package com.springdemo.project1.controllers;
 
 import com.springdemo.project1.exceptions.ProductNotFoundException;
 import com.springdemo.project1.models.Product;
+import com.springdemo.project1.utilities.AuthenticationCommons;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,40 +17,37 @@ import java.util.List;
 @RequestMapping ("/products")
 public class ProductController {
     private ProductService productService;
+    private AuthenticationCommons authenticationCommons;
     @Autowired
-    public ProductController(ProductService productService){
+    public ProductController(@Qualifier("selfproductservice")ProductService productService, AuthenticationCommons authenticationCommons){
         this.productService = productService;
+        this.authenticationCommons = authenticationCommons;
     }
     @GetMapping("")
-    public List<Product> getAllProducts(){
-        return productService.getAllProducts();
+    public ResponseEntity<List<Product>> getAllProducts(@RequestHeader ("AuthenticationToken") String token){
+       if(!authenticationCommons.validateToken(token)) {
+           return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+       }else {
+           return new ResponseEntity<>(productService.getAllProducts(),
+                   HttpStatus.OK);
+       }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getSingleProduct(@PathVariable ("id") Long id) throws ProductNotFoundException {
-        //throw new RuntimeException("Something went wrong");
         return new ResponseEntity<>(productService.getSingleProduct(id),
                 HttpStatus.OK);
     }
-//    public Product getSingleProduct(@PathVariable ("id") Long id){
-//        return null;
-//    }
-
-//    public String getSingleProduct(@PathVariable ("id") Long id){
-//        return "getProductAPI";
-//    }
-
 
     @PostMapping()
-    public Product addNewProduct(@RequestBody Product product){
-        Product p = new Product();
-        p.setTitle("new product");
-        return new Product();
+    public Product addNewProduct
+            (@RequestBody Product product){
+        return productService.addNewProduct(product);
     }
 
     @PatchMapping("/{id}")
-    public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product){
-        return new Product();
+    public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product) throws ProductNotFoundException {
+       return productService.replaceProduct(id,product);
     }
 
     @PutMapping ("/{id}")

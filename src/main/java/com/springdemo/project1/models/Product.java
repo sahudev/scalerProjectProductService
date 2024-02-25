@@ -1,15 +1,24 @@
 package com.springdemo.project1.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Product {
-    private Long id;
+@Entity
+public class Product extends BaseModel{
     private String title;
-    private double price;
+    private Double price;
+    @ManyToOne
     private Category category;
     private String description;
     private String imageURL;
+    private int numberOfSales;
 }
+// Product  :  Category
+// 1        -> 1
+// m        <- 1
+// many     : 1
