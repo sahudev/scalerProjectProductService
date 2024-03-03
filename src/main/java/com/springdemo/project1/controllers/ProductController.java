@@ -24,14 +24,20 @@ public class ProductController {
         this.authenticationCommons = authenticationCommons;
     }
     @GetMapping("")
-    public ResponseEntity<List<Product>> getAllProducts(@RequestHeader ("AuthenticationToken") String token){
-       if(!authenticationCommons.validateToken(token)) {
-           return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-       }else {
-           return new ResponseEntity<>(productService.getAllProducts(),
-                   HttpStatus.OK);
-       }
-    }
+    public ResponseEntity<List<Product>> getAllProducts(){
+        return new ResponseEntity<>(productService.getAllProducts(),
+                    HttpStatus.OK);
+        }
+
+    // Code for Manual Token Validation
+//    public ResponseEntity<List<Product>> getAllProducts(@RequestHeader ("AuthenticationToken") String token){
+//       if(!authenticationCommons.validateToken(token)) {
+//           return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//       }else {
+//           return new ResponseEntity<>(productService.getAllProducts(),
+//                   HttpStatus.OK);
+//       }
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getSingleProduct(@PathVariable ("id") Long id) throws ProductNotFoundException {
