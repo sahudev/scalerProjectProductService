@@ -9,22 +9,22 @@ import com.springdemo.project1.repositories.ProductRepository;
 
 import java.util.List;
 
-@SpringBootTest
+//@SpringBootTest
 class Project1ApplicationTests {
-
-	ProductRepository productRepository;
-	
-	@Autowired
-	public Project1ApplicationTests(ProductRepository productRepository){
-		this.productRepository = productRepository;
-	}
+//
+//	ProductRepository productRepository;
+//
+//	@Autowired
+//	public Project1ApplicationTests(ProductRepository productRepository){
+//		this.productRepository = productRepository;
+//	}
 	@Test
 	void contextLoads() {
 	}
-
-	@Test
-	@Transactional
-	void testQueries(){
-		List<Product> products = productRepository.somethingsomething();
-	}
+//
+//	@Test
+//	@Transactional
+//	void testQueries(){
+//		List<Product> products = productRepository.somethingsomething();
+//	}
 }

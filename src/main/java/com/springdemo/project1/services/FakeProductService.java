@@ -5,6 +5,7 @@ import com.springdemo.project1.exceptions.ProductNotFoundException;
 import com.springdemo.project1.models.Category;
 import com.springdemo.project1.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,10 +16,12 @@ import java.util.List;
 public class FakeProductService implements ProductService{
 
     private RestTemplate restTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    public FakeProductService(RestTemplate restTemplate){
+    public FakeProductService(RestTemplate restTemplate, RedisTemplate<String, Object> redisTemplate){
         this.restTemplate = restTemplate;
+        this.redisTemplate = redisTemplate;
     }
 
     private Product convertFakeProductToProduct(FakeProductDTO fakeProduct){
@@ -35,6 +38,15 @@ public class FakeProductService implements ProductService{
 
     @Override
     public Product getSingleProduct(Long id) throws ProductNotFoundException {
+
+        // Search in Redis Cache
+        Product p = (Product) redisTemplate.opsForHash().get("PRODUCTS","PRODUCT_"+ id);
+        if(p != null){
+            return p;
+        }
+
+        // If not found, search in the API
+
        FakeProductDTO productDTO = restTemplate.getForObject("https://fakestoreapi.com/products/" + id,
                 FakeProductDTO.class);
 
@@ -43,7 +55,9 @@ public class FakeProductService implements ProductService{
                    "Product with id:" + id + " doesn't exist."
            );
        }
-        return convertFakeProductToProduct(productDTO);
+       Product p1 = convertFakeProductToProduct(productDTO);
+       redisTemplate.opsForHash().put("PRODUCTS","PRODUCT_"+ id, p1);
+       return p1;
     }
 
     @Override
