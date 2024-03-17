@@ -5,6 +5,8 @@ import com.springdemo.project1.exceptions.ProductNotFoundException;
 import com.springdemo.project1.models.Category;
 import com.springdemo.project1.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -60,16 +62,30 @@ public class FakeProductService implements ProductService{
        return p1;
     }
 
+    // Standard get all products without pagination and sorting
+//    @Override
+//    public List<Product> getAllProducts() {
+//       FakeProductDTO[] response = restTemplate.getForObject(
+//               "https://fakestoreapi.com/products",FakeProductDTO[].class);
+//
+//       List<Product> answer = new ArrayList<Product>();
+//       for(FakeProductDTO dto: response ){
+//           answer.add(convertFakeProductToProduct(dto));
+//       }
+//       return answer;
+//    }
+
+    // Get all products using pagination and sorting
     @Override
-    public List<Product> getAllProducts() {
-       FakeProductDTO[] response = restTemplate.getForObject(
+    public Page<Product> getAllProducts(int page, int size) {
+        FakeProductDTO[] response = restTemplate.getForObject(
                "https://fakestoreapi.com/products",FakeProductDTO[].class);
 
        List<Product> answer = new ArrayList<Product>();
        for(FakeProductDTO dto: response ){
            answer.add(convertFakeProductToProduct(dto));
        }
-       return answer;
+       return new PageImpl<>(answer);
     }
 
     @Override

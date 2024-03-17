@@ -5,6 +5,7 @@ import com.springdemo.project1.models.Product;
 import com.springdemo.project1.utilities.AuthenticationCommons;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +24,21 @@ public class ProductController {
         this.productService = productService;
         this.authenticationCommons = authenticationCommons;
     }
+
+    // Get all Products without Pagination and Sorting
+//    @GetMapping("")
+//    public ResponseEntity<List<Product>> getAllProducts(){
+//        return new ResponseEntity<>(productService.getAllProducts(),
+//                    HttpStatus.OK);
+//        }
+
+    // Get all Products with Pagination and Sorting
     @GetMapping("")
-    public ResponseEntity<List<Product>> getAllProducts(){
-        return new ResponseEntity<>(productService.getAllProducts(),
-                    HttpStatus.OK);
-        }
+    public ResponseEntity<Page<Product>> getAllProducts(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                       @RequestParam(value = "size", defaultValue = "5") int size){
+        return new ResponseEntity<>(productService.getAllProducts(page,size),
+                HttpStatus.OK);
+    }
 
     // Code for Manual Token Validation
 //    public ResponseEntity<List<Product>> getAllProducts(@RequestHeader ("AuthenticationToken") String token){
