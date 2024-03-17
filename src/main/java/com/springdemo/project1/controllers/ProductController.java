@@ -20,7 +20,7 @@ public class ProductController {
     private ProductService productService;
     private AuthenticationCommons authenticationCommons;
     @Autowired
-    public ProductController(@Qualifier("fakeproductservice")ProductService productService, AuthenticationCommons authenticationCommons){
+    public ProductController(@Qualifier("selfproductservice")ProductService productService, AuthenticationCommons authenticationCommons){
         this.productService = productService;
         this.authenticationCommons = authenticationCommons;
     }
@@ -35,8 +35,10 @@ public class ProductController {
     // Get all Products with Pagination and Sorting
     @GetMapping("")
     public ResponseEntity<Page<Product>> getAllProducts(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                       @RequestParam(value = "size", defaultValue = "5") int size){
-        return new ResponseEntity<>(productService.getAllProducts(page,size),
+                                                        @RequestParam(value = "size", defaultValue = "5") int size,
+                                                        @RequestParam(value = "sortBy",defaultValue = "id") String sortBy,
+                                                        @RequestParam(value = "sortOrder", defaultValue = "ASC") String sortOrder){
+        return new ResponseEntity<>(productService.getAllProducts(page,size,sortBy,sortOrder),
                 HttpStatus.OK);
     }
 

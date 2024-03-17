@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,9 +41,17 @@ public class SelfProductService implements ProductService{
     }
 
     @Override
-    public Page<Product> getAllProducts(int page, int size) {
+    public Page<Product> getAllProducts(int page, int size, String sortBy, String sortOrder) {
+        Sort sort;
+        // Sort Instruction
+        if(sortOrder.equalsIgnoreCase("DESC")) {
+            sort = Sort.by(sortBy).descending();
+        }
+        else {
+            sort = Sort.by(sortBy).ascending();
+        }
         // Page start and size
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, sort);
         return productRepository.findAll(pageable);
     }
 

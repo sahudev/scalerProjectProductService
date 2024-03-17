@@ -77,7 +77,7 @@ public class FakeProductService implements ProductService{
 
     // Get all products using pagination and sorting
     @Override
-    public Page<Product> getAllProducts(int page, int size) {
+    public Page<Product> getAllProducts(int page, int size, String sortBy, String sortOrder) {
         FakeProductDTO[] response = restTemplate.getForObject(
                "https://fakestoreapi.com/products",FakeProductDTO[].class);
 
