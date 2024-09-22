@@ -1,5 +1,11 @@
 # Product Service - E-commerce Microservice
 
+Note: Please refer all these repos for the complete project 
+https://github.com/sahudev/scalerProjectUserService; 
+https://github.com/sahudev/scalerProjectPaymentService; 
+https://github.com/sahudev/scalerProjectProductService; 
+https://github.com/sahudev/scalerProjectEmailService;
+
 ## Overview
 This repository contains the **Product Service** for an e-commerce application, developed as part of a microservices-based architecture. The Product Service handles all product-related operations such as adding, updating, deleting, and retrieving product information.
 
